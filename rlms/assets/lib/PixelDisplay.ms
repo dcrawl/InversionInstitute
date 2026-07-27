@@ -160,6 +160,23 @@ PixelDisplay.drawPoly = function(points, color=null, penSize=1)
 	self._endDraw
 end function
 
+// Fill a polygon from a list of [x,y] points.  Compatible with the Mini
+// Micro PixelDisplay.fillPoly API: https://miniscript.org/wiki/PixelDisplay
+// NOTE: uses fan triangulation from the first point, so it fills convex
+// polygons correctly; a concave polygon may not fill exactly right.
+PixelDisplay.fillPoly = function(points, color=null)
+	if points == null or points.len < 3 then return
+	if color == null then color = self.color
+	color = colorToList(color)
+	flipped = []
+	for pt in points
+		flipped.push [pt[0], self.height - pt[1]]
+	end for
+	self._beginDraw
+	rl.DrawTriangleFan flipped, color
+	self._endDraw
+end function
+
 // Print a string using a built-in font.  Compatible with the Mini Micro
 // PixelDisplay.print API: https://miniscript.org/wiki/PixelDisplay.print
 PixelDisplay._fontSizes = {"small":14, "medium":20, "normal":24, "large":32}

@@ -78,3 +78,11 @@ rgb = @rgba
 lerp = function(c1, c2, t)
 	return fromList(raylib.ColorLerp(c1, c2, t))
 end function
+
+// hsv: convert hue/saturation/value/alpha (each 0-255) to a color string.
+// Matches Mini Micro's API: https://miniscript.org/wiki/Color.hsv
+hsv = function(h, s, v, a=255)
+	c = raylib.ColorFromHSV(h / 255 * 360, s / 255, v / 255)
+	c.a = a
+	return fromList(c)
+end function
